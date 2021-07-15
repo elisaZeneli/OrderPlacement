@@ -9,6 +9,48 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
         <style>
             body,h1,h2,h3,h4,h5,h6 {font-family: "Amatic SC", sans-serif}
+            .dropbtn1 {
+            background-color: rgb(26, 20, 20);
+            color: rgb(243, 236, 236);
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            }
+
+            .dropdown1 {
+            position: relative;
+            display: inline-block;
+            }
+
+            .dropdown1-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            }
+
+            .dropdown1-content a {
+            color: rgb(48, 44, 44);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            }
+
+            .dropdown1-content a:hover {background-color: #080808;}
+
+            .dropdown1:hover .dropdown1-content {
+            display: block;
+            }
+
+            .dropdown1:hover .dropbtn1 {
+            background-color: white;
+            }        
+                    
+                    
         </style>
     </head>
 <body>
@@ -17,16 +59,26 @@
 
 <!-- Navbar (Sits on top) -->
 <div class="w3-top w3-bar w3-xlarge w3-black w3-opacity-min", style="width: 980px;">
-<a href="#home" class="w3-bar-item w3-button">HOME</a>
-<a href="#menu" class="w3-bar-item w3-button">MENU</a>
-<a href="#about" class="w3-bar-item w3-button">ABOUT</a>
-<a href="#contact" class="w3-bar-item w3-button">CONTACT</a>
+<a href="{% url 'menu' %}" class="w3-bar-item w3-button">MENU</a>
     {% if user.is_authenticated %}
+        <a href="{% url 'user_info' %}" style="float:right">User: {{ user.get_username }}</a>
         <a href="{% url 'logout' %}?next={{ request.path }}" class="w3-bar-item w3-button" style="float: right;">Logout</a>
-        <p style="float: right;" class="w3-bar-item w3-button">User: {{ user.get_username }}</p>
+
+    
+        {% if perms.orders.can_view_others_info %}
+        <a href="{% url 'create_person' %}" class="w3-bar-item w3-button">Define The Amount To Spent</a>
+        <a href="{% url 'users_info' %}" class="w3-bar-item w3-button">All Orders</a>
+        <a href="{% url 'daily_orders' %}" class="w3-bar-item w3-button">Today's Orders</a>
+        <a href="{% url 'weekly_orders' %}" class="w3-bar-item w3-button">This Week's Orders</a>
+        <a href="{% url 'create_menu' %}" class="w3-bar-item w3-button">Create Menu</a>
         {% else %}
+        <a href="{% url 'check_previous_orders' %}" class="w3-bar-item w3-button">Check Previous Orders</a>
+        {% endif %}
+    {% else %}
         <a href="{% url 'login' %}?next={{ request.path }}" class="w3-bar-item w3-button" style="float: right;">Login</a>
     {% endif %} 
+
+
 </div>
 {% block content %}
 

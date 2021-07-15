@@ -1,0 +1,22 @@
+{% extends 'menu/base.html' %}
+
+{% block content %}
+
+<div id="menu" class="w3-container w3-black w3-xxlarge w3-padding-64">
+    <h1 class="w3-center w3-jumbo w3-padding-32">THE MENU</h1>
+    <div class="w3-row w3-center w3-border w3-border-dark-grey">
+
+    </div>
+
+        <div class="w3-container w3-white w3-padding-32">
+                
+            {% for order in orders %}
+            <h1><b>{{ order.meal.name }} </b><span class="w3-right w3-tag w3-dark-grey w3-round">${{ order.meal.price }}</span></h1>
+            <span >{{ order.date }}</span>
+            <hr>
+            {% endfor %}
+
+        </div>
+
+</div>
+{% endblock %}

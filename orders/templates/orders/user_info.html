@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Users</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <style>
+    table {
+    border-collapse: collapse;
+    width: 100%;
+    }
+
+    th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Daily Amount</th>
+            <th>Weekly Amount</th>
+        </tr>
+        <tr>
+            <td>{{ person.user.first_name }}</td>
+            <td>{{ person.user.last_name }} </td>
+            <td>{{ person.daily_amount }}</td>
+            <td>{{ person.weekly_amount }}</td>
+        </tr>
+    </table>
+
+</body>
+</html>
