@@ -22,47 +22,59 @@
         {% endfor %}
     {% endif %}
     
+        {% if meals %}
 
-        <form action="{% url 'place_order' %}" method="POST">
-        {% csrf_token %}
+            <form action="{% url 'place_order' %}" method="POST">
+            {% csrf_token %}
+                        
+                
+                    <div id="drinks" class="w3-container w3-white w3-padding-32">    
+                    {% for meal in meals %}
+                        {% if meal.meal_category == "drinks" %}
+                            <h1><b>{{ meal.name }}</b> <span class="w3-right w3-tag w3-dark-grey w3-round">${{ meal.price }}</span><span><input type="checkbox" value="{{ meal.id }}" name="meals"></span></h1>
+                            <p class="w3-text-grey">{% if meal.description %}{{ meal.description }} {% else %}  {% endif %}</p>
+                            <hr>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+
+                    <h1 id="starters" class="w3-center w3-jumbo w3-padding-32">Starters</h1>
+                    <div class="w3-container w3-white w3-padding-32">
+                    {% for meal in meals %}
+                    {% if meal.meal_category == "starters" %}
+                        <h1><b>{{ meal.name }}</b> 
+                        <span class="w3-right w3-tag w3-dark-grey w3-round">${{ meal.price }}</span><span><input type="checkbox" value="{{ meal.id }}" name="meals"></span></h1>
+                        <p class="w3-text-grey">{% if meal.description %}{{ meal.description }} {% else %}  {% endif %}</p>
+                        <hr>
+                        {% endif %}
+                    {% endfor %}
+                    </div>
                     
-            
-                <div id="drinks" class="w3-container w3-white w3-padding-32">    
-                {% for meal in meals %}
-                    {% if meal.meal_category == "drinks" %}
-                        <h1><b>{{ meal.name }}</b> <span class="w3-right w3-tag w3-dark-grey w3-round">${{ meal.price }}</span><span><input type="checkbox" value="{{ meal.id }}" name="meals"></span></h1>
-                        <p class="w3-text-grey">{{ meal.description }}</p>
+                    <h1 id="maincourse" class="w3-center w3-jumbo w3-padding-32">Main Course</h1>
+                    <div class="w3-container w3-white w3-padding-32">
+                    {% for meal in meals %}
+                    {% if meal.meal_category == "main_course" %}
+                        <h1><b>{{ meal.name }}</b> 
+                        <span class="w3-right w3-tag w3-dark-grey w3-round">${{ meal.price }}</span><span><input type="checkbox" value="{{ meal.id }}" name="meals"></span></h1>
+                        <p class="w3-text-grey">{% if meal.description %}{{ meal.description }} {% else %}  {% endif %}</p>
                         <hr>
                     {% endif %}
-                {% endfor %}
+                    {% endfor %}
+
+                    <button>Place Order</button>
+                </form>
+
+            {% else %}
+
+                <div id="drinks" class="w3-container w3-white w3-padding-32">    
+                        <h1><b></b> <span class="w3-right w3-tag w3-dark-grey w3-round"></span><span></span></h1>
+                        <p class="w3-text-grey"></p>
+                        <hr>
+                       
+                    
                 </div>
 
-                <h1 id="starters" class="w3-center w3-jumbo w3-padding-32">Starters</h1>
-                <div class="w3-container w3-white w3-padding-32">
-                {% for meal in meals %}
-                {% if meal.meal_category == "starters" %}
-                    <h1><b>{{ meal.name }}</b> 
-                    <span class="w3-right w3-tag w3-dark-grey w3-round">${{ meal.price }}</span><span><input type="checkbox" value="{{ meal.id }}" name="meals"></span></h1>
-                    <p class="w3-text-grey">{{ meal.description }}</p>
-                    <hr>
-                    {% endif %}
-                {% endfor %}
-                </div>
-                
-                <h1 id="maincourse" class="w3-center w3-jumbo w3-padding-32">Main Course</h1>
-                <div class="w3-container w3-white w3-padding-32">
-                {% for meal in meals %}
-                {% if meal.meal_category == "main_course" %}
-                    <h1><b>{{ meal.name }}</b> 
-                    <span class="w3-right w3-tag w3-dark-grey w3-round">${{ meal.price }}</span><span><input type="checkbox" value="{{ meal.id }}" name="meals"></span></h1>
-                    <p class="w3-text-grey">{% if meal.description %}{{ meal.description }} {% else %}  {% endif %}</p>
-                    <hr>
-                {% endif %}
-                {% endfor %}
-
-                <button>Place Order</button>
-            </form>
-       
+            {% endif %}
 
     </div>
     </div>

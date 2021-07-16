@@ -1,7 +1,57 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+        <script src="https://www.w3schools.com/lib/w3.js"></script>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Amatic+SC">
+       
 <style>
+
+body,h1,h2,h3,h4,h5,h6 {font-family: "Amatic SC", sans-serif}
+            .dropbtn1 {
+            background-color: rgb(26, 20, 20);
+            color: rgb(243, 236, 236);
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            }
+
+            .dropdown1 {
+            position: relative;
+            display: inline-block;
+            }
+
+            .dropdown1-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            }
+
+            .dropdown1-content a {
+            color: rgb(48, 44, 44);
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            }
+
+            .dropdown1-content a:hover {background-color: #080808;}
+
+            .dropdown1:hover .dropdown1-content {
+            display: block;
+            }
+
+            .dropdown1:hover .dropbtn1 {
+            background-color: white;
+            }        
+              
+
+
 table {
   border-collapse: collapse;
   width: 100%;
@@ -16,6 +66,10 @@ th, td {
 </head>
 <body>
 
+    <div id="home" class="w3-content">
+
+        <!-- Navbar (Sits on top) -->
+        
 <h2>
     {% if person %}
     <table>
@@ -52,3 +106,7 @@ th, td {
             </tr>
         {% endfor %}
 
+
+</table>
+
+</div>

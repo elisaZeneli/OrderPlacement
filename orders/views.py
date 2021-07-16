@@ -9,6 +9,8 @@ from django.utils.timezone import datetime
 from datetime import timedelta
 from datetime import date
 
+
+
 # Create your views here.
 
 @login_required
@@ -21,9 +23,10 @@ def create_person(request):
         weekly_amount = request.POST['weekly_amount']
 
         try:
-            person = Person.objects.filter(user=User.objects.get(username=username)).update(user=User.objects.get(username=username), daily_amount=daily_amount, weekly_amount=weekly_amount)
-            person.save()
-            messages.success(request, "Data is updated successfully")  
+            Person.objects.filter(user = User.objects.get(username=username)).delete()
+            p = Person(user=User.objects.get(username=username), daily_amount=daily_amount, weekly_amount=weekly_amount)
+            p.save()
+            messages.success(request, "Data is added successfully")  
             return render(request, 'orders/create_person.html')
         
         except:
@@ -41,18 +44,20 @@ def create_person(request):
 def place_order(request):
     if request.method == "POST":
         menu = Menu.objects.all()
+        
         if (menu[0].date_created - timezone.now()).total_seconds() > 7200:
             messages.warning(request, "Orders are no longer taken.")
             return render(request, 'menu/menu.html' )
         
         meals_list = request.POST.getlist('meals')
-        print(meals_list)
+
         total = sum([Menu_Item.objects.get(id=meal_id).price for meal_id in meals_list])
 
         try:
             menu = Menu_Item.objects.get(id=meals_list[0]).menu
             
         except:
+
             return render(request, 'menu/menu.html' )
         try:
             person = Person.objects.get(user=request.user)
@@ -66,23 +71,30 @@ def place_order(request):
         for meal_id in meals_list:
             meal = Menu_Item.objects.get(id=meal_id)
             
-            if person.daily_amount < total:
-                if date.today().weekday() == 4 and person.weekly_amount > total:
+            
+            if date.today().weekday() == 4 and person.weekly_amount > total:
                     person.daily_amount = person.weekly_amount
+                    person.save()
+                    
 
-                else:    
-                    messages.warning(request, 'You have only : {}'.format(person.daily_amount))
-                    return render(request, 'menu/menu.html', {'meals': meals_list})
+            if person.daily_amount < total:
+                messages.warning(request, 'You have only : {}'.format(person.daily_amount))
+                return render(request, 'menu/menu.html')
 
-            order = Order.objects.create(user=request.user, menu=menu, meal=meal, date=timezone.now())
+            
+                    
+
+            Order.objects.create(user=request.user, menu=menu, meal=meal, date=timezone.now())
             
             
-
-        Person.objects.update(user=request.user, daily_amount=(person.daily_amount - total), weekly_amount=(person.weekly_amount - total))
+        person = Person.objects.get(user=request.user)
+        person.daily_amount = person.daily_amount - total
+        person.weekly_amount = person.weekly_amount - total
+        person.save()
         
         messages.success(request, 'The order is placed.')
-
-        return render(request, 'menu/menu.html', {'meals': meals_list})
+        
+        return render(request, 'menu/menu.html')
         
         
         
@@ -140,3 +152,8 @@ def check_weekly_orders(request):
     for i in range(7):
         orders += Order.objects.filter(date=datetime.now() - timedelta(days=i))
     return render(request, 'orders/weekly_orders.html', {'orders': orders})
+
+
+
+
+

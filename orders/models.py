@@ -26,7 +26,7 @@ class Person(models.Model):
         permissions = (("can_add_row", "Can add new rows"),("can_update_row", "Can update rows"), ("can_delete_rows", "Can delete rows"), ("can_view_info", "Can view info"), ("can_view_others_info", "Can view others info"))
 
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     daily_amount = models.FloatField()
     weekly_amount = models.FloatField()
     

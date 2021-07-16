@@ -14,7 +14,6 @@ def main(request):
 
 
 def show_menu(request):
-    menu = Menu.objects.all()
     meals = Menu_Item.objects.all()
     print(meals)
     return render(request, 'menu/menu.html', {'meals': meals})
