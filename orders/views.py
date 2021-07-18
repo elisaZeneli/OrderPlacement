@@ -68,9 +68,8 @@ def place_order(request):
             return render(request, 'menu/menu.html' )
 
         
-        for meal_id in meals_list:
+        '''for meal_id in meals_list:
             meal = Menu_Item.objects.get(id=meal_id)
-            
             
             if date.today().weekday() == 4 and person.weekly_amount > total:
                     person.daily_amount = person.weekly_amount
@@ -81,12 +80,27 @@ def place_order(request):
                 messages.warning(request, 'You have only : {}'.format(person.daily_amount))
                 return render(request, 'menu/menu.html')
 
-            
+
+
+            order = Order(user=request.user, menu=menu, date=timezone.now())
+            order.meal.add(meal)
+           '''
+
+        if date.today().weekday() == 4 and person.weekly_amount > total:
+                    person.daily_amount = person.weekly_amount
+                    person.save()
                     
 
-            Order.objects.create(user=request.user, menu=menu, meal=meal, date=timezone.now())
-            
-            
+        if person.daily_amount < total:
+                messages.warning(request, 'You have only : {}'.format(person.daily_amount))
+                return render(request, 'menu/menu.html')
+
+        order = Order.objects.create(user=request.user, menu=menu, date=timezone.now())   
+        
+        meals = Menu_Item.objects.filter(name__in=meals_list)
+
+        order.meal.add(*meals)
+
         person = Person.objects.get(user=request.user)
         person.daily_amount = person.daily_amount - total
         person.weekly_amount = person.weekly_amount - total

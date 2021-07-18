@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import render
 from django.utils import timezone
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from .models import Menu, Menu_Item
 from django.contrib import messages
 
@@ -20,6 +20,8 @@ def show_menu(request):
 
 
 @login_required
+@permission_required('orders.can_add_row', raise_exception=True)
+@permission_required("orders.can_update_row", raise_exception=True)
 def create_menu(request):
     if request.method == 'POST':
         menu = Menu.objects.all()

@@ -12,7 +12,7 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE, null=True)
-    meal = models.ForeignKey(Menu_Item, on_delete=models.CASCADE, null=True)
+    meal = models.ManyToManyField(Menu_Item, null=True)
 
     date = models.DateField()
     def __str__(self):
