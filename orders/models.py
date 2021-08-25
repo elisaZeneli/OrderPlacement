@@ -1,9 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import User
 from menu.models import *
+from django.utils.timezone import datetime
+
+
 # Create your models here.
 
 
+
+"""class OrderAmount:
+    meal = models.ForeignKey(Menu_Item, related_name="order_amounts", on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, related_name="order_amounts", on_delete=models.SET_NULL, null=True)
+    quantity = models.IntegerField()
+"""
 
 class Order(models.Model):
     class Meta:
@@ -12,11 +21,13 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE, null=True)
-    meal = models.ManyToManyField(Menu_Item, null=True)
+    meal = models.ForeignKey(Menu_Item, on_delete=models.CASCADE, null=True)
+    
 
     date = models.DateField()
     def __str__(self):
-        return self.user.username + '-' + self.meal.name
+        return self.user.username
+
 
 
 
@@ -36,3 +47,10 @@ class Person(models.Model):
 
 
 
+class OrderImage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    image = models.ImageField(upload_to='images/', null=True)
+    date = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return self.user.username

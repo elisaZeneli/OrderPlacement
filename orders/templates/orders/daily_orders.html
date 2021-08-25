@@ -20,6 +20,7 @@
             {% for order in orders %}
                 <h1><b>{{ order.user.username }}</b><span class="w3-right w3-tag w3-dark-grey w3-round">${{ order.meal.name }}</span><span><p class="w3-text-grey">{{ order.meal.price }}</p></h1>
                 <hr>
+           
             {% endfor %}
         </div>
     </div>

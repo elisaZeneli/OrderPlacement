@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Order, Person
+from .models import Order, OrderImage, Person
 from django.contrib.auth.models import Group, User
 from menu.models import Menu_Item, Menu
 from django.contrib import messages
@@ -67,8 +67,8 @@ def place_order(request):
             messages.warning(request, "You cannot order now. Come later.")
             return render(request, 'menu/menu.html' )
 
-        
-        '''for meal_id in meals_list:
+        #ForeignKey option
+        for meal_id in meals_list:
             meal = Menu_Item.objects.get(id=meal_id)
             
             if date.today().weekday() == 4 and person.weekly_amount > total:
@@ -82,24 +82,12 @@ def place_order(request):
 
 
 
-            order = Order(user=request.user, menu=menu, date=timezone.now())
-            order.meal.add(meal)
-           '''
-
-        if date.today().weekday() == 4 and person.weekly_amount > total:
-                    person.daily_amount = person.weekly_amount
-                    person.save()
-                    
-
-        if person.daily_amount < total:
-                messages.warning(request, 'You have only : {}'.format(person.daily_amount))
-                return render(request, 'menu/menu.html')
-
-        order = Order.objects.create(user=request.user, menu=menu, date=timezone.now())   
-        
-        meals = Menu_Item.objects.filter(name__in=meals_list)
-
-        order.meal.add(*meals)
+            order = Order(user=request.user, menu=menu, meal=meal, date=timezone.now())
+            order.save()
+            print(order.menu)
+           
+           
+    
 
         person = Person.objects.get(user=request.user)
         person.daily_amount = person.daily_amount - total
@@ -108,7 +96,7 @@ def place_order(request):
         
         messages.success(request, 'The order is placed.')
         
-        return render(request, 'menu/menu.html')
+        return render(request, 'menu/menu.html', {'total': total})
         
         
         
@@ -117,6 +105,7 @@ def place_order(request):
 @login_required
 def check_orders(request):
     orders = Order.objects.filter(user=request.user).filter(date__lt=timezone.now()).order_by('-date')
+    
     return render(request, 'orders/check_orders.html', {'orders': orders})
 
 
@@ -144,6 +133,7 @@ def get_user_info(request):
 @permission_required('orders.can_view_others_info', raise_exception=True)
 def check_users_orders(request, pk):
     orders = Order.objects.filter(user=User.objects.get(username=pk))
+    
     try:
         person = Person.objects.get(user=User.objects.get(username=pk))
         return render(request, 'orders/check_users_orders.html', {'orders' : orders, 'person': person})
@@ -156,6 +146,7 @@ def check_users_orders(request, pk):
 @permission_required('orders.can_view_others_info', raise_exception=True)
 def check_daily_orders(request):
     orders = Order.objects.filter(date=datetime.today())
+    
     return render(request, 'orders/daily_orders.html', {'orders': orders})
 
 
@@ -168,6 +159,19 @@ def check_weekly_orders(request):
     return render(request, 'orders/weekly_orders.html', {'orders': orders})
 
 
+@login_required
+def upload_image(request, pk):
+    if request.method == 'POST':
+        user = User.objects.get(username=pk)
+        image = request.POST['image']
+        order_image = OrderImage(user=user, image=image, date=timezone.now())
+        order_image.save()
+    
+
+    messages.success(request, "Image is uploaded. The order is being processed.")
+    return render(request, 'menu/menu.html')
 
 
-
+def delete_images():
+    OrderImage.objects.all().delete()
+    

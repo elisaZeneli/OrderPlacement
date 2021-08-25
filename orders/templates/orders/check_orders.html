@@ -10,8 +10,9 @@
 
         <div class="w3-container w3-white w3-padding-32">
                 
+            
             {% for order in orders %}
-            <h1><b>{{ order.meal.name }} </b><span class="w3-right w3-tag w3-dark-grey w3-round">${{ order.meal.price }}</span></h1>
+            <h1><b>{{order.meal.name }} </b><span class="w3-right w3-tag w3-dark-grey w3-round">${{ order.meal.price }}</span></h1>
             <span >{{ order.date }}</span>
             <hr>
             {% endfor %}

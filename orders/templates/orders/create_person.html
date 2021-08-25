@@ -66,63 +66,65 @@
     <div id="home" class="w3-content">
 
       <!-- Navbar (Sits on top) -->
-      <div class="w3-top w3-bar w3-xlarge w3-black w3-opacity-min", style="width: 980px;">
-      <a href="{% url 'menu' %}" class="w3-bar-item w3-button">MENU</a>
-          {% if user.is_authenticated %}
-              <a href="{% url 'user_info' %}" style="float:right">User: {{ user.get_username }}</a>
-              <a href="{% url 'logout' %}?next={{ request.path }}" class="w3-bar-item w3-button" style="float: right;">Logout</a>
-      
-          
-              {% if perms.orders.can_view_others_info %}
-              <a href="{% url 'create_person' %}" class="w3-bar-item w3-button">Define The Amount To Spent</a>
-              <a href="{% url 'users_info' %}" class="w3-bar-item w3-button">All Orders</a>
-              <a href="{% url 'daily_orders' %}" class="w3-bar-item w3-button">Today's Orders</a>
-              <a href="{% url 'weekly_orders' %}" class="w3-bar-item w3-button">This Week's Orders</a>
-              <a href="{% url 'create_menu' %}" class="w3-bar-item w3-button">Create Menu</a>
-              {% else %}
-              <a href="{% url 'check_previous_orders' %}" class="w3-bar-item w3-button">Check Previous Orders</a>
-              {% endif %}
-          {% else %}
-              <a href="{% url 'login' %}?next={{ request.path }}" class="w3-bar-item w3-button" style="float: right;">Login</a>
-          {% endif %} 
-      
-      
-      </div>
-
+        <div class="w3-top w3-bar w3-xlarge w3-black w3-opacity-min", style="width: 980px;">
+          <a href="{% url 'menu' %}" class="w3-bar-item w3-button">MENU</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'user_info' %}" style="float:right">User: {{ user.get_username }}</a>
+                <a href="{% url 'logout' %}?next={{ request.path }}" class="w3-bar-item w3-button" style="float: right;">Logout</a>
+        
+            
+                {% if perms.orders.can_view_others_info %}
+                <a href="{% url 'create_person' %}" class="w3-bar-item w3-button">Define The Amount To Spent</a>
+                <a href="{% url 'users_info' %}" class="w3-bar-item w3-button">All Orders</a>
+                <a href="{% url 'daily_orders' %}" class="w3-bar-item w3-button">Today's Orders</a>
+                <a href="{% url 'weekly_orders' %}" class="w3-bar-item w3-button">This Week's Orders</a>
+                <a href="{% url 'create_menu' %}" class="w3-bar-item w3-button">Create Menu</a>
+                {% else %}
+                <a href="{% url 'check_previous_orders' %}" class="w3-bar-item w3-button">Check Previous Orders</a>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'login' %}?next={{ request.path }}" class="w3-bar-item w3-button" style="float: right;">Login</a>
+            {% endif %} 
+        
+        
+        </div>
     
+      
 
-<div style="margin-top: 150px;">
-  
-  {% if messages %}
-  {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">
-          <a href="#" class="close" data-dismiss="alert">&times;</a>
-          {{ message }}
-      </div>
-  {% endfor %}
-  {% endif %}
+    <div style="margin-top: 150px;">
+      
+      {% if messages %}
+      {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">
+              <a href="#" class="close" data-dismiss="alert">&times;</a>
+              {{ message }}
+          </div>
+      {% endfor %}
+      {% endif %}
 
-<form method="POST" action="{% url 'create_person' %}">
-    {% csrf_token %}
-    <div class="form-row">
-      <div class="form-group col-md-6">
-        <label for="inputuser">User</label>
-        <input type="text" class="form-control" name="username" id="inputuser" placeholder="Username">
-      </div>
+        <form method="POST" action="{% url 'create_person' %}">
+            {% csrf_token %}
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputuser">User</label>
+                <input type="text" class="form-control" name="username" id="inputuser" placeholder="Username">
+              </div>
 
-      <div class="form-group col-md-6">
-        <label for="inputdaily">Daily Amount</label>
-        <input type="text" name="daily_amount" class="form-control" id="inputdaily" placeholder="Daily Amount">
-      </div>
+              <div class="form-group col-md-6">
+                <label for="inputdaily">Daily Amount</label>
+                <input type="text" name="daily_amount" class="form-control" id="inputdaily" placeholder="Daily Amount">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputweekly">Weekly Amount</label>
+              <input type="text" name="weekly_amount" class="form-control" id="inputweekly">
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Enter</button>
+        </form>
+
     </div>
-    <div class="form-group">
-      <label for="inputweekly">Weekly Amount</label>
-      <input type="text" name="weekly_amount" class="form-control" id="inputweekly">
-    </div>
-    
-    <button type="submit" class="btn btn-primary">Enter</button>
-  </form>
-
+  </div>
 </div>
    <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

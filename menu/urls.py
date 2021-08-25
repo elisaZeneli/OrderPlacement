@@ -7,5 +7,5 @@ urlpatterns = [
     path('menu/', views.show_menu, name='menu'),
     #path('menus/<str:pk>/', views.show_menu, name='show_menu'),
     path('create_menu/', views.create_menu, name='create_menu'),
-    
+
 ]

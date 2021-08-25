@@ -98,13 +98,14 @@ th, td {
     
         </tr>
         {% for order in orders %}
-            <tr>
-                <td>{{ order.meal.name }} </td>
-                <td> {{ order.meal.price }}</td>
-                <td>{{ order.date }}</td>
-                <td></td>
-            </tr>
-        {% endfor %}
+                <tr>
+                    <td>{{ order.meal.name }} </td>
+                    <td> {{ order.meal.price }}</td>
+                    <td>{{ order.date }}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+        
 
 
 </table>

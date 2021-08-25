@@ -4,14 +4,7 @@
 {% block content %}
 
 
-    <!-- Menu -->
 <div id="menu" class="w3-container w3-black w3-xxlarge w3-padding-64">
-    <h1 class="w3-center w3-jumbo w3-padding-32">THE MENU</h1>
-    <div class="w3-row w3-center w3-border w3-border-dark-grey">
-    <a href="#drinks"><div class="w3-third w3-padding-large w3-red">Drinks</div></a>
-    <a href="#starters"><div class="w3-third w3-padding-large w3-hover-red">Starters</div></a>
-    <a href="#maincourse"><div class="w3-third w3-padding-large w3-hover-red">Main Course</div></a>
-    </div>
     
     {% if messages %}
         {% for message in messages %}
@@ -23,6 +16,14 @@
     {% endif %}
     
         {% if meals %}
+            <!-- Menu -->
+            
+                <h1 class="w3-center w3-jumbo w3-padding-32">THE MENU</h1>
+                <div class="w3-row w3-center w3-border w3-border-dark-grey">
+                <a href="#drinks"><div class="w3-third w3-padding-large w3-red">Drinks</div></a>
+                <a href="#starters"><div class="w3-third w3-padding-large w3-hover-red">Starters</div></a>
+                <a href="#maincourse"><div class="w3-third w3-padding-large w3-hover-red">Main Course</div></a>
+                </div>
 
             <form action="{% url 'place_order' %}" method="POST">
             {% csrf_token %}
@@ -64,17 +65,27 @@
                     <button>Place Order</button>
                 </form>
 
-            {% else %}
+        {% elif total %}
 
-                <div id="drinks" class="w3-container w3-white w3-padding-32">    
-                        <h1><b></b> <span class="w3-right w3-tag w3-dark-grey w3-round"></span><span></span></h1>
-                        <p class="w3-text-grey"></p>
-                        <hr>
+            <div class="w3-container w3-white w3-padding-32">    
+                    
+                <h1><b></b> <span class="w3-right w3-tag w3-dark-grey w3-round"></span><span></span></h1>
+                <p class="w3-text-grey">
+                    The order's total is: {{ total }}
+                </p>
+                <form action="{% url 'upload_image' pk=user %}" method="POST">
+                    {% csrf_token %}
+                    <label for="fileUpload">Upload file</label>
+                    <input type="file" class="form-control-file" name="image">
+                    <button class="btn btn-primary">Upload</button>
+                  </form>
+
+                <hr>
                        
                     
-                </div>
+            </div>
 
-            {% endif %}
+        {% endif %}
 
     </div>
     </div>

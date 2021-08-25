@@ -31,7 +31,7 @@ class Menu_Item(models.Model):
 
     CATEGORIES = [('main_course', 'Main Course'), ('drinks', 'Drinks'), ('starters', 'Starters')]
 
-    name = models.CharField(max_length=200, blank=False, null=False)
+    name = models.CharField(max_length=200, blank=False, null=False, unique=True)
     price = models.FloatField()
     description = models.CharField(max_length=1000, blank=True, null=True)
     menu = models.ForeignKey(Menu,  on_delete=models.SET_NULL, null=True, blank=True)
