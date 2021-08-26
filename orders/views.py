@@ -161,9 +161,9 @@ def check_weekly_orders(request):
 
 @login_required
 def upload_image(request, pk):
-    if request.method == 'POST':
+    if request.method == 'POST' and 'image' in request.FILES:
         user = User.objects.get(username=pk)
-        image = request.POST['image']
+        image = request.FILES['image']
         order_image = OrderImage(user=user, image=image, date=timezone.now())
         order_image.save()
     

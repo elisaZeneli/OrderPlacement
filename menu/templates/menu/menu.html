@@ -73,7 +73,7 @@
                 <p class="w3-text-grey">
                     The order's total is: {{ total }}
                 </p>
-                <form action="{% url 'upload_image' pk=user %}" method="POST">
+                <form action="{% url 'upload_image' pk=user %}" method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     <label for="fileUpload">Upload file</label>
                     <input type="file" class="form-control-file" name="image">
