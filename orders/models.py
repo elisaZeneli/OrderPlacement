@@ -50,7 +50,7 @@ class Person(models.Model):
 class OrderImage(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     image = models.ImageField(upload_to='images/', null=True)
-    date = models.DateTimeField(null=True, blank=True)
+    date = models.DateField(null=True, blank=True)
 
     def __str__(self):
         return self.user.username

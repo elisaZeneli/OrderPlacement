@@ -14,7 +14,8 @@ urlpatterns = [
     path('users_info/', views.get_users_info, name='users_info'),
     path('user_info/', views.get_user_info, name="user_info"),
     path('all_users_orders/<str:pk>/', views.check_users_orders, name='check_users_orders'),
-    path('upload_image/<str:pk>/', views.upload_image, name='upload_image')
+    path('upload_image/<str:pk>/', views.upload_image, name='upload_image'),
+    path('verify_order/', views.verify_order, name='verify_order')
 ]
 
 

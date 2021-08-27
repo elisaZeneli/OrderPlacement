@@ -160,13 +160,26 @@ def check_weekly_orders(request):
 
 
 @login_required
+def verify_order(request):
+    images = OrderImage.objects.filter(date=datetime.now())
+    return render(request, 'orders/verify_orders.html', {'images': images})
+
+
+
+@login_required
 def upload_image(request, pk):
     if request.method == 'POST' and 'image' in request.FILES:
         user = User.objects.get(username=pk)
         image = request.FILES['image']
+        
+        #from PIL import Image
+
         order_image = OrderImage(user=user, image=image, date=timezone.now())
         order_image.save()
-    
+        """order = Order.objects.get(user=user)
+        order.image = order_image
+        order.save()
+    """
 
     messages.success(request, "Image is uploaded. The order is being processed.")
     return render(request, 'menu/menu.html')
