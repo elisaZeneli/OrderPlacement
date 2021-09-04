@@ -1,3 +1,4 @@
+from orders.models import DatabaseInfo
 from django.shortcuts import render, get_object_or_404, redirect
 from django.shortcuts import render
 from django.utils import timezone
@@ -9,7 +10,8 @@ from django.contrib import messages
 
 
 def main(request):
-    return render(request, 'menu/main.html')
+    db_info = DatabaseInfo.objects.all()[0]
+    return render(request, 'menu/main.html', {'db_info': db_info})
 
 
 

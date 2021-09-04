@@ -4,3 +4,5 @@ from .models import *
 admin.site.register(Order)
 admin.site.register(Person)
 admin.site.register(OrderImage)
+admin.site.register(DatabaseInfo)
+admin.site.register(ImagesSize)

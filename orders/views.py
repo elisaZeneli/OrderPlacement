@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Order, OrderImage, Person
+from .models import DatabaseInfo, ImagesSize, Order, OrderImage, Person
 from django.contrib.auth.models import Group, User
 from menu.models import Menu_Item, Menu
 from django.contrib import messages
@@ -133,12 +133,12 @@ def get_user_info(request):
 @permission_required('orders.can_view_others_info', raise_exception=True)
 def check_users_orders(request, pk):
     orders = Order.objects.filter(user=User.objects.get(username=pk))
-    
+    username = pk
     try:
         person = Person.objects.get(user=User.objects.get(username=pk))
-        return render(request, 'orders/check_users_orders.html', {'orders' : orders, 'person': person})
+        return render(request, 'orders/check_users_orders.html', {'orders' : orders, 'person': person, 'username': username})
     except:
-        return render(request, 'orders/check_users_orders.html', {'orders' : orders})
+        return render(request, 'orders/check_users_orders.html', {'orders' : orders, 'username':username})
     
 
 
@@ -160,15 +160,18 @@ def check_weekly_orders(request):
 
 
 @login_required
-def verify_order(request):
-    images = OrderImage.objects.filter(date=datetime.now())
-    return render(request, 'orders/verify_orders.html', {'images': images})
+@permission_required('orders.can_view_others_info', raise_exception=True)
+def verify_order(request, pk):
+    images = OrderImage.objects.filter(user=User.objects.get(username=pk)).filter(date=datetime.now())
+    
+    return render(request, 'orders/verify_orders.html', {'images': images, 'username': pk})
 
 
 
 @login_required
 def upload_image(request, pk):
     if request.method == 'POST' and 'image' in request.FILES:
+        import os
         user = User.objects.get(username=pk)
         image = request.FILES['image']
         
@@ -176,6 +179,11 @@ def upload_image(request, pk):
 
         order_image = OrderImage(user=user, image=image, date=timezone.now())
         order_image.save()
+        image_path = order_image.image.path
+        size = os.path.getsize(image_path)
+        images_size = ImagesSize.objects.all()[0]
+        images_size.current_total_size += size
+        images_size.save()
         """order = Order.objects.get(user=user)
         order.image = order_image
         order.save()
@@ -187,4 +195,42 @@ def upload_image(request, pk):
 
 def delete_images():
     OrderImage.objects.all().delete()
+    import os
+    for image in os.listdir('C:/Users/USER/OrderApp/mysite/media/images'):
+        os.remove(image) 
+
+           
+
+def calculate_storage():
+    total = 0
+    """from pathlib import Path
+
+    root_directory = Path('C:/Users/USER/OrderApp/mysite/media/images')
+    nbytes = sum(f.stat().st_size for f in root_directory.glob('**/*') if f.is_file())"""
+    """import os
+
+    for order_image in OrderImage.objects.all():
+        image_path = order_image.image.path
+        total += os.path.getsize(image_path)
     
+    print(total)
+    
+
+    if total > 20:"""
+    
+    images_size = ImagesSize.objects.all()[0]
+    limit = images_size.limit
+    current_total_size = images_size.current_total_size
+
+    if current_total_size > limit:
+        print("limit passed")
+        db_info = DatabaseInfo.objects.all()[0]
+        db_info.database_info = True
+        db_info.save()
+        print(db_info)
+
+    else:
+        db_info = DatabaseInfo.objects.all()[0]
+        db_info.database_info = False
+        db_info.save()
+

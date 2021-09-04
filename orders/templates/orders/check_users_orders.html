@@ -66,48 +66,51 @@ th, td {
 </head>
 <body>
 
-    <div id="home" class="w3-content">
+<div id="home" class="w3-content">
 
-        <!-- Navbar (Sits on top) -->
+    <!-- Navbar (Sits on top) -->
         
-<h2>
-    {% if person %}
+    <h2>
+        {% if person %}
+        <table>
+            <tr>
+                <th> Daily Amount</th>
+                <th> Weekly Amount</th>
+            </tr>
+            <tr>
+                <td>{{ person.daily_amount }}</td>
+                <td>{{ person.weekly_amount }}</td>
+            </tr>
+            
+        </table>
+        {% else %}
+            <p><a href="{% url 'create_person' %}">Define the amount to spent.</a></p>
+        {% endif %}
+    </h2>
+
+
+
     <table>
         <tr>
-            <th> Daily Amount</th>
-            <th> Weekly Amount</th>
-        </tr>
-        <tr>
-            <td>{{ person.daily_amount }}</td>
-            <td>{{ person.weekly_amount }}</td>
-        </tr>
+            <th>Orders</th>
+            <th>Price</th>
+            <th>Date of Order</th>
         
-    </table>
-    {% else %}
-        <p><a href="{% url 'create_person' %}">Define the amount to spent.</a></p>
-    {% endif %}
-</h2>
-
-
-
-<table>
-    <tr>
-        <th>Orders</th>
-        <th>Price</th>
-        <th>Date of Order</th>
-    
-        </tr>
-        {% for order in orders %}
-                <tr>
-                    <td>{{ order.meal.name }} </td>
-                    <td> {{ order.meal.price }}</td>
-                    <td>{{ order.date }}</td>
-                    <td></td>
-                </tr>
+            </tr>
+            {% for order in orders %}
+                    <tr>
+                        <td>{{ order.meal.name }} </td>
+                        <td> ${{ order.meal.price }}</td>
+                        <td>{{ order.date }}</td>
+                        <td></td>
+                    </tr>
             {% endfor %}
-        
+            
 
+    </table>
+    <button><a href="{% url 'verify_order' pk=username %}">Verify Order</a></button>
 
-</table>
 
 </div>
+
+

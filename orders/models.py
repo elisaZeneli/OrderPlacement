@@ -2,17 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from menu.models import *
 from django.utils.timezone import datetime
-
+from django.core.exceptions import ValidationError
+from django.core.files.images import get_image_dimensions
 
 # Create your models here.
-
-
-
-"""class OrderAmount:
-    meal = models.ForeignKey(Menu_Item, related_name="order_amounts", on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(User, related_name="order_amounts", on_delete=models.SET_NULL, null=True)
-    quantity = models.IntegerField()
-"""
 
 class Order(models.Model):
     class Meta:
@@ -52,5 +45,17 @@ class OrderImage(models.Model):
     image = models.ImageField(upload_to='images/', null=True)
     date = models.DateField(null=True, blank=True)
 
+
     def __str__(self):
         return self.user.username
+
+
+
+class ImagesSize(models.Model):
+    limit = models.IntegerField(null=True)
+    current_total_size = models.IntegerField(null=True)
+
+
+class DatabaseInfo(models.Model):
+    database_info = models.BooleanField(null=True)
+
